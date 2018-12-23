@@ -120,17 +120,17 @@ class D_NormalIC:
 
         return round(ep, 4)
 
-    def insertSeedIntoSeedSet(self, k_prod, ii_node, s_set, a_n_set, w_list, pp_list):
+    def insertSeedIntoSeedSet(self, k_prod, i_node, s_set, a_n_set, w_list, pp_list):
         # -- insert the seed with maximum expected profit into seed set --
         # -- insert the seed into seed set --
         # -- insert the seed into a_n_set --
-        # -- ii_node's wallet is 0 --
-        # -- ii_node's pp to all product is 0 --
-        s_set[k_prod].add(ii_node)
-        a_n_set[k_prod].add(ii_node)
-        w_list[int(ii_node)] = 0
+        # -- i_node's wallet is 0 --
+        # -- i_node's pp to all product is 0 --
+        s_set[k_prod].add(i_node)
+        a_n_set[k_prod].add(i_node)
+        w_list[int(i_node)] = 0
         for k in range(self.num_product):
-            pp_list[k][int(ii_node)] = 0
+            pp_list[k][int(i_node)] = 0
         cur_profit = 0.0
 
         ### try_a_n_list: (list) the set to store the nodes may be activated for some products
@@ -142,10 +142,10 @@ class D_NormalIC:
 
         # -- add the receivers of seed into try_a_n_list --
         # -- notice: prevent the seed from owing no receiver --
-        if ii_node not in self.graph_dict:
+        if i_node not in self.graph_dict:
             return s_set, a_n_set, cur_profit, w_list, pp_list
 
-        outdict = self.graph_dict[ii_node]
+        outdict = self.graph_dict[i_node]
         for out in outdict:
             if not (float(outdict[out]) >= self.diffusion_threshold):
                 continue
@@ -164,18 +164,18 @@ class D_NormalIC:
         while len(try_a_n_list) > 0:
             ### try_node: (list) the nodes may be activated for k-products
             try_node = try_a_n_list.pop()
-            ii_node, ii_prob, ii_acc_prob = try_node[0], try_node[1], try_node[2]
-            if random.random() <= ii_prob * pp_list[k_prod][int(ii_node)]:
-                a_n_set[k_prod].add(ii_node)
-                w_list[int(ii_node)] -= self.product_list[k_prod][2]
-                pp_list = dnic.updatePersonalProbList(k_prod, ii_node, w_list, pp_list)
+            i_node, ii_prob, ii_acc_prob = try_node[0], try_node[1], try_node[2]
+            if random.random() <= ii_prob * pp_list[k_prod][int(i_node)]:
+                a_n_set[k_prod].add(i_node)
+                w_list[int(i_node)] -= self.product_list[k_prod][2]
+                pp_list = dnic.updatePersonalProbList(k_prod, i_node, w_list, pp_list)
                 an_number += 1
                 cur_profit += self.product_list[k_prod][0]
 
-                if ii_node not in self.graph_dict:
+                if i_node not in self.graph_dict:
                     continue
 
-                outdictw = self.graph_dict[ii_node]
+                outdictw = self.graph_dict[i_node]
                 for outw in outdictw:
                     if not (ii_acc_prob * float(outdictw[outw]) >= self.diffusion_threshold):
                         continue
