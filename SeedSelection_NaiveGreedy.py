@@ -73,8 +73,8 @@ if __name__ == "__main__":
     ### whether_infect_not_only_buying: (bool) if infect when only after buying, then False
     data_name = "email"
     product_name = "item_r1p3n1"
-    total_budget = 2
-    execution_times = 10
+    total_budget = 5
+    sample_number = 10
     pp_strategy = 1
     whether_infect_not_only_buying = bool(0)
 
@@ -138,6 +138,7 @@ if __name__ == "__main__":
     personal_prob_list = [[1.0 for _ in range(num_node)] for _ in range(num_product)]
     ### an_promote_list: (list) to record the seed activate customer event for a product
     an_promote_list = []
+    class_count, class_accumulate_num_node_list, class_accumulate_wallet = [], [[] for _ in range(10)], [[] for _ in range(10)]
 
     current_wallet_list = copy.deepcopy(wallet_list)
     exp_profit_list = copy.deepcopy(exp_profit_list)
@@ -152,8 +153,12 @@ if __name__ == "__main__":
         for k in range(num_product):
             if mep_i_node in nban_seed_set[k]:
                 nban_seed_set[k].remove(mep_i_node)
+        class_count.append([mep_k_prod, mep_i_node, current_wallet_list[int(mep_i_node)]])
         seed_set, activated_node_set, an_number, current_profit, current_wallet_list, personal_prob_list = \
             dnic.insertSeedIntoSeedSet(mep_k_prod, mep_i_node, seed_set, activated_node_set, current_wallet_list, personal_prob_list)
+        for num in range(10):
+            class_accumulate_num_node_list[num].append(len(iniG.getNodeClassList(iniP.getProductList(product_name)[1], current_wallet_list)[0][num]))
+            class_accumulate_wallet[num].append(iniG.getNodeClassList(iniP.getProductList(product_name)[1], current_wallet_list)[1][num])
         pro_k_list[mep_k_prod] += round(current_profit, 4)
         bud_k_list[mep_k_prod] += seed_cost_dict[mep_i_node]
         now_profit += round(current_profit, 4)
@@ -175,6 +180,42 @@ if __name__ == "__main__":
         pro_k_list[k], bud_k_list[k] = round(pro_k_list[k], 4), round(bud_k_list[k], 4)
     how_long = round(time.time() - start_time, 4)
     print(result)
-    print(an_promote_list)
+    # print(an_promote_list)
+    ap1, ap2 = ["" for _ in range(num_product)], ["" for _ in range(num_product)]
+    apn1, apn2 = [0 for _ in range(num_product)], [0.0 for _ in range(num_product)]
+    for ap in an_promote_list:
+        for k in range(num_product):
+            if ap[0] == k:
+                apn1[k] += ap[2]
+                apn2[k] += ap[3]
+                ap1[k] = ap1[k] + str(apn1[k]) + "\t"
+                ap2[k] = ap2[k] + str(apn2[k]) + "\t"
+            else:
+                ap1[k] = ap1[k] + str(apn1[k]) + "\t"
+                ap2[k] = ap2[k] + str(apn2[k]) + "\t"
+    for k in range(num_product):
+        print(ap1[k])
+    for k in range(num_product):
+        print(ap2[k])
     print(pro_k_list, bud_k_list)
+    cc1, cc2, cc3 = "", "", ""
+    for cc in class_count:
+        cc1 = cc1 + str(cc[0]) + "\t"
+        cc2 = cc2 + str(cc[1]) + "\t"
+        cc3 = cc3 + str(round(cc[2], 2)) + "\t"
+    print(cc1)
+    print(cc2)
+    print(cc3)
+    for num in range(10):
+        ca_list = ""
+        for t, ca in enumerate(class_accumulate_num_node_list[num]):
+            if num == 0:
+                ca -= (t + 1)
+            ca_list = ca_list + str(ca) + "\t"
+        print(ca_list)
+    for num in range(10):
+        ca_list = ""
+        for ca in class_accumulate_wallet[num]:
+            ca_list = ca_list + str(ca) + "\t"
+        print(ca_list)
     print("total time: " + str(how_long) + "sec")
