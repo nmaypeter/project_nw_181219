@@ -117,7 +117,7 @@ if __name__ == "__main__":
                             if (mrss_times[i] > mrss[0]) or ((mrss_times[i] == mrss[0]) and (mrss_pro[i] / mrss_times[i]) > (mrss[1] / mrss[0])):
                                 mrss = [mrss_times[i], mrss_pro[i], seed_set]
 
-                            how_long = round(time.time() - start_time, 4)
+                            how_long = round(time.time() - start_time, 2)
                             print("total_time: " + str(how_long) + "sec")
                             print(result[sample_count])
                             print("avg_profit = " + str(round(avg_profit / (sample_count + 1), 4)) + ", avg_budget = " + str(round(avg_budget / (sample_count + 1), 4)))
