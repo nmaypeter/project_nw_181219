@@ -1,5 +1,6 @@
 import copy
 import time
+from random import choice
 from Initialization import *
 
 class D_NormalIC:
@@ -163,7 +164,8 @@ class D_NormalIC:
 
         while len(try_a_n_list) > 0:
             ### try_node: (list) the nodes may be activated for k-products
-            try_node = try_a_n_list.pop()
+            try_node = choice(try_a_n_list)
+            try_a_n_list.remove(try_node)
             i_node, ii_prob, ii_acc_prob = try_node[0], try_node[1], try_node[2]
             if random.random() <= ii_prob * pp_list[k_prod][int(i_node)]:
                 a_n_set[k_prod].add(i_node)
