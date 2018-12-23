@@ -47,6 +47,7 @@ if __name__ == "__main__":
                         avg_num_k_seed, avg_num_k_an = [0 for _ in range(num_product)], [0 for _ in range(num_product)]
                         mrss_times, mrss_pro, mrss_set = [], [], []
                         mrss = [0, 0.0, ""]
+                        an_promote_list = [[] for _ in range(sample_number)]
 
                         ssng = SeedSelection_NG(graph_dict, seed_cost_dict, product_list, bud, pp_strategy, whether_infect_not_only_buying)
                         dnic = D_NormalIC(graph_dict, seed_cost_dict, product_list, pp_strategy, whether_infect_not_only_buying)
@@ -60,7 +61,6 @@ if __name__ == "__main__":
                         notban_seed_set = [set(graph_dict.keys()) for _ in range(num_product)]
                         exp_profit_list, notban_seed_set = ssng.updateExpectProfitList(notban_seed_set, exp_profit_list, 0.0, [set() for _ in range(num_product)],
                                                                                        wallet_list, [[1.0 for _ in range(num_node)] for _ in range(num_product)])
-                        an_promote_list = [[] for _ in range(sample_number)]
 
                         for sample_count in range(sample_number):
                             # print("sample_count = " + str(sample_count))
@@ -85,8 +85,7 @@ if __name__ == "__main__":
                                     if mep_i_node in nban_seed_set[k]:
                                         nban_seed_set[k].remove(mep_i_node)
                                 seed_set, activated_node_set, an_number, current_profit, current_wallet_list, personal_prob_list = \
-                                    dnic.insertSeedIntoSeedSet(mep_k_prod, mep_i_node, seed_set, activated_node_set,
-                                                               current_wallet_list, personal_prob_list)
+                                    dnic.insertSeedIntoSeedSet(mep_k_prod, mep_i_node, seed_set, activated_node_set, current_wallet_list, personal_prob_list)
                                 pro_k_list[mep_k_prod] += round(current_profit, 4)
                                 bud_k_list[mep_k_prod] += seed_cost_dict[mep_i_node]
                                 now_profit += round(current_profit, 4)
