@@ -249,7 +249,7 @@ if __name__ == "__main__":
     ### number_price: (int) the kinds of generated price
     ### number_ratio: (int) the kinds of generated ratio
     data_name = "email"
-    product_name = "item_r1p3n2"
+    product_name = "item_r1p3n1"
     number_ratio, number_price = int(list(product_name)[list(product_name).index('r') + 1]), int(list(product_name)[list(product_name).index('p') + 1])
 
     iniG = IniGraph(data_name)
@@ -262,11 +262,13 @@ if __name__ == "__main__":
     seed_cost_dict = iniG.constructSeedCostDict()
     # iniP.setProductListSingleRandomRatioMultiFixIntervalPrice(number_price)
     product_list, sum_price = iniP.getProductList(product_name)
-    iniG.setNodeWallet(product_name, sum_price)
+    # iniG.setNodeWallet(product_name, sum_price)
     wallet_list = iniG.getWalletList(product_name)
 
     class_accumulate_node_list, class_accumulate_wallet = iniG.getNodeClassList(sum_price, wallet_list)
+    # -- number of nodes of each class --
     for num in range(10):
-        print(round(sum_price * (num + 1) / 10, 2), len(class_accumulate_node_list[num]), class_accumulate_wallet[num])
+        print(str(round(sum_price * (num + 1) / 10, 2)) + "\t" + str(len(class_accumulate_node_list[num])))
+    # -- accumulative budget for each class --
     for num in range(10):
-        print(class_accumulate_node_list[num])
+        print(str(round(sum_price * (num + 1) / 10, 2)) + "\t" + str(class_accumulate_wallet[num]))
