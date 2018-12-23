@@ -56,7 +56,7 @@ class IniGraph:
             for i in range(num_node + 1):
                 seed_cost_dict[str(i)] = round(int(seed_cost_list[i][1]) / max_degree, 2)
         f.close()
-        print(max_degree)
+        # print(max_degree)
         return seed_cost_dict
 
     def constructGraphDict(self):
@@ -100,17 +100,23 @@ class IniGraph:
         f.close()
         return wallet_list
 
-    def getTotalWallet(self, prod_name):
-        # -- get wallet_list from file --
-        total_wallet = 0.0
-        with open("data/" + self.graph_data_name + "/" + self. graph_data_name + "_wallet_r" + list(prod_name)[list(prod_name).index('r') + 1] +
-                  "p" + list(prod_name)[list(prod_name).index('p') + 1] +
-                  "n" + list(prod_name)[list(prod_name).index('n') + 1] + ".txt") as f:
-            for line in f:
-                (node, wallet) = line.split()
-                total_wallet += float(wallet)
-        f.close()
-        return round(total_wallet, 4)
+    @staticmethod
+    def getNodeClassList(upper, wallet_list):
+        class_acc_node_list, class_acc_wallet = [[] for _ in range(10)], [0.0 for _ in range(10)]
+        for i in range(len(wallet_list)):
+            if wallet_list[i] == 0:
+                class_acc_node_list[0].append(str(i))
+                class_acc_wallet[0] += wallet_list[i]
+            for num in range(10):
+                if upper * num / 10 < wallet_list[i] <= upper * (num + 1) / 10:
+                    class_acc_node_list[num].append(str(i))
+                    class_acc_wallet[num] += wallet_list[i]
+                    continue
+
+        for num in range(10):
+            class_acc_wallet[num] = round(class_acc_wallet[num], 2)
+
+        return class_acc_node_list, class_acc_wallet
 
 class IniProduct:
     @staticmethod
@@ -255,9 +261,12 @@ if __name__ == "__main__":
     # graph_dict = iniG.constructGraphDict()
     seed_cost_dict = iniG.constructSeedCostDict()
     # iniP.setProductListSingleRandomRatioMultiFixIntervalPrice(number_price)
-    product_list = iniP.getProductList(product_name)[0]
-    # iniG.setNodeWallet(product_name, iniP.getProductList(product_name)[1])
-    # wallet_list = iniG.getWalletList(product_name)
-    # t_wallet = iniG.getTotalWallet(product_name)
-    # print(t_wallet)
-    print(seed_cost_dict['313'])
+    product_list, sum_price = iniP.getProductList(product_name)
+    iniG.setNodeWallet(product_name, sum_price)
+    wallet_list = iniG.getWalletList(product_name)
+
+    class_accumulate_node_list, class_accumulate_wallet = iniG.getNodeClassList(sum_price, wallet_list)
+    for num in range(10):
+        print(round(sum_price * (num + 1) / 10, 2), len(class_accumulate_node_list[num]), class_accumulate_wallet[num])
+    for num in range(10):
+        print(class_accumulate_node_list[num])
