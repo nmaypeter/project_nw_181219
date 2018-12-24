@@ -74,7 +74,6 @@ if __name__ == "__main__":
     data_name = "email"
     product_name = "item_r1p3n1"
     total_budget = 10
-    execution_times = 1
     pp_strategy = 1
     whether_infect_not_only_buying = bool(0)
 
@@ -136,7 +135,7 @@ if __name__ == "__main__":
     # -- main --
     while now_budget < total_budget and mep_i_node != '-1':
         # print("insertSeedIntoSeedSet")
-        mep_k_prod = choice([0, 1, 2])
+        mep_k_prod = choice([k for k in range(num_product)])
         seed_set, activated_node_set, an_number, current_profit, current_wallet_list, personal_prob_list = \
             dnic.insertSeedIntoSeedSet(mep_k_prod, mep_i_node, seed_set, activated_node_set, current_wallet_list, personal_prob_list)
         pro_k_list[mep_k_prod] += round(current_profit, 4)
