@@ -137,7 +137,6 @@ if __name__ == "__main__":
     personal_prob_list = [[1.0 for _ in range(num_node)] for _ in range(num_product)]
     ### an_promote_list: (list) to record the seed activate customer event for a product
     an_promote_list = []
-    class_count, class_accumulate_num_node_list, class_accumulate_wallet = [], [[] for _ in range(10)], [[] for _ in range(10)]
 
     current_wallet_list = copy.deepcopy(wallet_list)
     exp_profit_list = copy.deepcopy(exp_profit_list)
@@ -152,14 +151,8 @@ if __name__ == "__main__":
         for k in range(num_product):
             if mep_i_node in nban_seed_set[k]:
                 nban_seed_set[k].remove(mep_i_node)
-        class_count.append([mep_k_prod, mep_i_node, current_wallet_list[int(mep_i_node)]])
         seed_set, activated_node_set, an_number, current_profit, current_wallet_list, personal_prob_list = \
             dnic.insertSeedIntoSeedSet(mep_k_prod, mep_i_node, seed_set, activated_node_set, current_wallet_list, personal_prob_list)
-        for num in range(10):
-            class_accumulate_num_node_list[num].append(len(
-                iniG.getNodeClassList(iniP.getProductList(product_name)[1], current_wallet_list)[0][num]))
-            class_accumulate_wallet[num].append(
-                iniG.getNodeClassList(iniP.getProductList(product_name)[1], current_wallet_list)[1][num])
         pro_k_list[mep_k_prod] += round(current_profit, 4)
         bud_k_list[mep_k_prod] += seed_cost_dict[mep_i_node]
         now_profit += round(current_profit, 4)
