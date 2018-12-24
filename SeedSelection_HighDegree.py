@@ -156,6 +156,10 @@ if __name__ == "__main__":
         avg_num_k_an[k] += now_num_k_an[k]
         pro_k_list[k], bud_k_list[k] = round(pro_k_list[k], 4), round(bud_k_list[k], 4)
     how_long = round(time.time() - start_time, 2)
+    print("result")
     print(result)
-    print(round(avg_profit, 4), round(avg_budget, 4))
+    print("\nan_promote_list")
+    print(an_promote_list)
+    print("\npro_k_list, bud_k_list")
+    print(pro_k_list, bud_k_list)
     print("total time: " + str(how_long) + "sec")
