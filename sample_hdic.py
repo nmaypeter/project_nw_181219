@@ -58,13 +58,15 @@ if __name__ == "__main__":
                     # -- main --
                     while now_budget < bud and mep_i_node != '-1':
                         mep_k_prod = choice([k for k in range(num_product)])
+                        class_count.append([mep_k_prod, mep_i_node, current_wallet_list[int(mep_i_node)]])
                         seed_set, activated_node_set, an_number, current_profit, current_wallet_list, personal_prob_list = \
-                            dnic.insertSeedIntoSeedSet(mep_k_prod, mep_i_node, seed_set, activated_node_set,
-                                                       current_wallet_list, personal_prob_list)
-                        pro_k_list[mep_k_prod] += round(current_profit, 4)
-                        bud_k_list[mep_k_prod] += seed_cost_dict[mep_i_node]
+                            dnic.insertSeedIntoSeedSet(mep_k_prod, mep_i_node, seed_set, activated_node_set, current_wallet_list, personal_prob_list)
+                        for num in range(10):
+                            class_accumulate_num_node_list[num].append(len(iniG.getNodeClassList(iniP.getProductList(product_name)[1], current_wallet_list)[0][num]))
+                            class_accumulate_wallet[num].append(iniG.getNodeClassList(iniP.getProductList(product_name)[1], current_wallet_list)[1][num])
                         now_profit += round(current_profit, 4)
                         now_budget += seed_cost_dict[mep_i_node]
+                        an_promote_list.append([mep_k_prod, mep_i_node, an_number, round(current_profit, 4)])
                         mep_i_node, degree_dict = sshd.getHighDegreeNode(degree_dict)
                         while seed_cost_dict[mep_i_node] > total_budget or degree_dict == {}:
                             mep_i_node, degree_dict = sshd.getHighDegreeNode(degree_dict)
