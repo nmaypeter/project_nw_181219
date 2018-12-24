@@ -75,6 +75,7 @@ if __name__ == "__main__":
                             class_accumulate_wallet[num].append(iniG.getNodeClassList(iniP.getProductList(product_name)[1], current_wallet_list)[1][num])
                         now_profit += round(current_profit, 4)
                         now_budget += seed_cost_dict[mep_i_node]
+                        an_promote_list.append([mep_k_prod, mep_i_node, an_number, round(current_profit, 4)])
                         exp_profit_list, nban_seed_set = ssng.updateExpectProfitList(seed_set, nban_seed_set, exp_profit_list, now_budget, activated_node_set, current_wallet_list, personal_prob_list)
                         mep_k_prod, mep_i_node = ssng.getMostValuableSeed(exp_profit_list, nban_seed_set)
 
