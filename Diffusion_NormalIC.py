@@ -58,7 +58,7 @@ class D_NormalIC:
 
         return pp_list
 
-    def getSeedExpectProfit(self, k_prod, i_node, a_n_set_k, w_list, pp_list_k):
+    def getSeedExpectProfit(self, k_prod, i_node, s_set, a_n_set_k, w_list, pp_list_k):
         # -- calculate the expected profit for single node when it's chosen as a seed --
         ### try_a_n_list: (list) the set to store the nodes may be activated for k-products
         ### try_a_n_list[][0]: (str) the receiver when i is ancestor
@@ -68,6 +68,9 @@ class D_NormalIC:
         a_n_set_k = copy.deepcopy(a_n_set_k)
         a_n_set_k.add(i_node)
         try_a_n_list = []
+        s_total_set = set()
+        for k in range(self.num_product):
+            s_total_set = s_total_set.union(s_set[k])
         ep = -1 * self.seed_cost_dict[i_node]
 
         # -- add the receivers of nnode into try_a_n_list --
@@ -80,6 +83,8 @@ class D_NormalIC:
             if not (float(outdict[out]) >= self.diffusion_threshold):
                 continue
             if not (out not in a_n_set_k):
+                continue
+            if not (out not in s_total_set):
                 continue
             if not (w_list[int(out)] > self.product_list[k_prod][2]):
                 continue
@@ -107,6 +112,8 @@ class D_NormalIC:
                     continue
                 if not (outw not in a_n_set_k):
                     continue
+                if not (outw not in s_total_set):
+                    continue
                 if not (w_list[int(outw)] > self.product_list[k_prod][2]):
                     continue
                 if not (pp_list_k[int(outw)] > 0):
@@ -133,6 +140,9 @@ class D_NormalIC:
         for k in range(self.num_product):
             pp_list[k][int(i_node)] = 0
         cur_profit = 0.0
+        s_total_set = set()
+        for k in range(self.num_product):
+            s_total_set = s_total_set.union(s_set[k])
 
         ### try_a_n_list: (list) the set to store the nodes may be activated for some products
         ### try_a_n_list[][0]: (str) the receiver when seed is ancestor
@@ -151,6 +161,8 @@ class D_NormalIC:
             if not (float(outdict[out]) >= self.diffusion_threshold):
                 continue
             if not (out not in a_n_set[k_prod]):
+                continue
+            if not (out not in s_total_set):
                 continue
             if not (w_list[int(out)] > self.product_list[k_prod][2]):
                 continue
@@ -183,6 +195,8 @@ class D_NormalIC:
                         continue
                     if not (outw not in a_n_set[k_prod]):
                         continue
+                    if not (outw not in s_total_set):
+                        continue
                     if not (w_list[int(outw)] > self.product_list[k_prod][2]):
                         continue
                     if not (pp_list[k_prod][int(outw)] > 0):
@@ -210,6 +224,9 @@ class D_NormalIC:
         for k in range(self.num_product):
             for i in s_set[k]:
                 seed_set_list.append([k, i])
+        s_total_set = set()
+        for k in range(self.num_product):
+            s_total_set = s_total_set.union(s_set[k])
 
         # -- insert the children of seeds into try_a_n_set --
         while len(seed_set_list) > 0:
@@ -220,6 +237,8 @@ class D_NormalIC:
                 if not (float(outdict[out]) >= self.diffusion_threshold):
                     continue
                 if not (out not in a_n_set[k_prod]):
+                    continue
+                if not (out not in s_total_set):
                     continue
                 if not (w_list[int(out)] > self.product_list[k_prod][2]):
                     continue
@@ -249,6 +268,8 @@ class D_NormalIC:
                     if not (ki_prob * float(outdictw[outw]) >= self.diffusion_threshold):
                         continue
                     if not (outw not in a_n_set[k_prod]):
+                        continue
+                    if not (outw not in s_total_set):
                         continue
                     if not (w_list[int(outw)] > self.product_list[k_prod][2]):
                         continue
@@ -272,6 +293,9 @@ class D_NormalIC:
         for k in range(self.num_product):
             for i in s_set[k]:
                 seed_set_list.append([k, i])
+        s_total_set = set()
+        for k in range(self.num_product):
+            s_total_set = s_total_set.union(s_set[k])
 
         # -- insert the children of seeds into try_a_n_set --
         while len(seed_set_list) > 0:
@@ -282,6 +306,8 @@ class D_NormalIC:
                 if not (float(outdict[out]) >= self.diffusion_threshold):
                     continue
                 if not (out not in a_n_set[k_prod]):
+                    continue
+                if not (out not in s_total_set):
                     continue
                 if not (w_list[int(out)] > self.product_list[k_prod][2]):
                     continue
@@ -311,6 +337,8 @@ class D_NormalIC:
                     if not (ki_prob * float(outdictw[outw]) >= self.diffusion_threshold):
                         continue
                     if not (outw not in a_n_set[k_prod]):
+                        continue
+                    if not (outw not in s_total_set):
                         continue
                     if not (w_list[int(outw)] > self.product_list[k_prod][2]):
                         continue
