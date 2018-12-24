@@ -59,8 +59,8 @@ if __name__ == "__main__":
                                 if i not in graph_dict:
                                     exp_profit_list[k][int(i)] -= seed_cost_dict[i]
                         notban_seed_set = [set(graph_dict.keys()) for _ in range(num_product)]
-                        exp_profit_list, notban_seed_set = ssng.updateExpectProfitList(notban_seed_set, exp_profit_list, 0.0, [set() for _ in range(num_product)],
-                                                                                       wallet_list, [[1.0 for _ in range(num_node)] for _ in range(num_product)])
+                        exp_profit_list, notban_seed_set = ssng.updateExpectProfitList([set() for _ in range(num_product)], notban_seed_set, exp_profit_list, 0.0,
+                                                                                       [set() for _ in range(num_product)], wallet_list, [[1.0 for _ in range(num_node)] for _ in range(num_product)])
 
                         for sample_count in range(sample_number):
                             # print("sample_count = " + str(sample_count))
@@ -91,7 +91,7 @@ if __name__ == "__main__":
                                 now_profit += round(current_profit, 4)
                                 now_budget += seed_cost_dict[mep_i_node]
                                 an_promote_list[sample_count].append([mep_k_prod, mep_i_node, an_number, round(current_profit, 4)])
-                                exp_profit_list, nban_seed_set = ssng.updateExpectProfitList(nban_seed_set, exp_profit_list, now_budget, activated_node_set, current_wallet_list, personal_prob_list)
+                                exp_profit_list, nban_seed_set = ssng.updateExpectProfitList(seed_set, nban_seed_set, exp_profit_list, now_budget, activated_node_set, current_wallet_list, personal_prob_list)
                                 mep_k_prod, mep_i_node = ssng.getMostValuableSeed(exp_profit_list, nban_seed_set)
 
                             # print("result")
